@@ -20,7 +20,7 @@ def print_inlcude(dir_fname):
     with open("template.js") as jstemp:
         js_content = ''.join(jstemp.readlines())
     base = "https://raw.githubusercontent.com/Wang-Guo-Sheng/ruby_crash_week/main/"
-    url = base + dir_fname.replace('\\', '/')
+    url = base + dir_fname.replace('\\', '/').replace('.rb', '.html')
     result['js'] = js_content.replace('TSTRING', tstring).replace('URL', url)
 
     return result
