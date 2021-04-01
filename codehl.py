@@ -39,7 +39,7 @@ def convert_dir(directory, operation):
     results = []
     for filename in os.listdir(directory):
         if filename.endswith(".rb"):
-            dir_fname = ''.join([directory, '\\', filename])
+            dir_fname = ''.join([directory, '/', filename])
             results.append(operation(dir_fname))
             continue
         else:

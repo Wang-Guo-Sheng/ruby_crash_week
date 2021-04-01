@@ -7,3 +7,20 @@ module ToFile
         File.open(filename, 'w') {|f| f.write(to_s)}
     end
 end
+
+
+class Person
+    include ToFile
+    attr_accessor :name
+
+    def initialize(name)
+        @name = name
+    end
+
+    def to_s
+        name
+    end
+end
+
+
+Person.new('matx').to_f
