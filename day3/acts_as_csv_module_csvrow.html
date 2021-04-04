@@ -1,0 +1,65 @@
+<div class="highlight"><pre><span></span><span class="k">module</span> <span class="nn">ActsAsCsv</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+        <span class="n">base</span><span class="o">.</span><span class="n">extend</span> <span class="no">ClassMethods</span>
+    <span class="k">end</span>
+
+    <span class="k">module</span> <span class="nn">ClassMethods</span>
+        <span class="k">def</span> <span class="nf">acts_as_csv</span>
+            <span class="kp">include</span> <span class="no">InstanceMethods</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">module</span> <span class="nn">InstanceMethods</span>
+        <span class="k">def</span> <span class="nf">read</span>
+            <span class="vi">@csv_contents</span> <span class="o">=</span> <span class="o">[]</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="nb">self</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">downcase</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+            <span class="vi">@headers</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">gets</span><span class="o">.</span><span class="n">chomp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+            <span class="n">file</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">row</span><span class="o">|</span>
+                <span class="n">row_contents</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">chomp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="vi">@csv_contents</span> <span class="o">&lt;&lt;</span> <span class="no">CsvRow</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">row_contents</span><span class="p">)</span>
+            <span class="k">end</span>
+        <span class="k">end</span>
+
+        <span class="kp">attr_accessor</span> <span class="ss">:headers</span><span class="p">,</span> <span class="ss">:csv_contents</span>
+
+        <span class="k">def</span> <span class="nf">initialize</span>
+            <span class="n">read</span>
+        <span class="k">end</span>
+
+        <span class="kp">include</span> <span class="no">Enumerable</span>
+
+        <span class="k">def</span> <span class="nf">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+            <span class="vi">@csv_contents</span><span class="o">.</span><span class="n">each</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+
+<span class="k">class</span> <span class="nc">CsvRow</span>
+    <span class="kp">attr_accessor</span> <span class="ss">:csvrow_contents</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">titles</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+        <span class="vi">@csvrow_contents</span> <span class="o">=</span>  <span class="no">Hash</span><span class="o">[</span><span class="n">titles</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">]</span>
+    <span class="k">end</span>
+
+    <span class="k">def</span> <span class="nf">method_missing</span> <span class="n">key_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="n">csvrow_contents</span><span class="o">[</span><span class="n">key_name</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span> <span class="o">||</span> <span class="k">super</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+
+<span class="k">class</span> <span class="nc">RubyCsv</span>
+    <span class="kp">include</span> <span class="no">ActsAsCsv</span>
+    <span class="n">acts_as_csv</span>
+<span class="k">end</span>
+
+
+<span class="c1"># h = [&#39;one&#39;, &#39;two&#39;]</span>
+<span class="c1"># r = [&#39;lions&#39;, &#39;tigers&#39;]</span>
+<span class="c1"># cr = CsvRow.new(h, r)</span>
+<span class="c1"># puts cr.one</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="no">RubyCsv</span><span class="o">.</span><span class="n">new</span>
+<span class="n">m</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span><span class="o">|</span><span class="n">row</span><span class="o">|</span> <span class="nb">puts</span> <span class="n">row</span><span class="o">.</span><span class="n">version</span><span class="p">}</span>
+</pre></div>
