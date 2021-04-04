@@ -1,0 +1,23 @@
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Roman</span>
+    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_missing</span> <span class="nb">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span>
+        <span class="n">roman</span> <span class="o">=</span> <span class="nb">name</span><span class="o">.</span><span class="n">to_s</span>
+        <span class="n">roman</span><span class="o">.</span><span class="n">gsub!</span><span class="p">(</span><span class="s2">&quot;IV&quot;</span><span class="p">,</span> <span class="s2">&quot;IIII&quot;</span><span class="p">)</span>
+        <span class="n">roman</span><span class="o">.</span><span class="n">gsub!</span><span class="p">(</span><span class="s2">&quot;IX&quot;</span><span class="p">,</span> <span class="s2">&quot;VIIII&quot;</span><span class="p">)</span>
+        <span class="n">roman</span><span class="o">.</span><span class="n">gsub!</span><span class="p">(</span><span class="s2">&quot;XL&quot;</span><span class="p">,</span> <span class="s2">&quot;XXXX&quot;</span><span class="p">)</span>
+        <span class="n">roman</span><span class="o">.</span><span class="n">gsub!</span><span class="p">(</span><span class="s2">&quot;XC&quot;</span><span class="p">,</span> <span class="s2">&quot;LXXXX&quot;</span><span class="p">)</span>
+
+        <span class="n">num</span> <span class="o">=</span> <span class="p">(</span><span class="n">roman</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">)</span> <span class="o">+</span> 
+            <span class="n">roman</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;V&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">+</span>
+            <span class="n">roman</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span>
+            <span class="n">roman</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">50</span> <span class="o">+</span>
+            <span class="n">roman</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">then</span> <span class="k">super</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="k">else</span> <span class="n">num</span> <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="nb">puts</span> <span class="no">Roman</span><span class="o">.</span><span class="n">X</span>
+<span class="nb">puts</span> <span class="no">Roman</span><span class="o">.</span><span class="n">XC</span>
+<span class="nb">puts</span> <span class="no">Roman</span><span class="o">.</span><span class="n">XII</span>
+<span class="nb">puts</span> <span class="no">Roman</span><span class="o">.</span><span class="n">foo</span>
+</pre></div>

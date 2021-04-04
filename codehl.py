@@ -47,7 +47,7 @@ def convert_dir(directory, operation):
     return results
 
 
-convert_dir('day2', ruby2html)
-results = convert_dir('day2', print_inlcude)
+convert_dir('day3', ruby2html)
+results = convert_dir('day3', print_inlcude)
 print('\n'.join([res['div'] for res in results]))
 print('\n'.join([res['js'] for res in results]))
